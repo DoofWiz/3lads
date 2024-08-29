@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.43667558, g: 0.48427194, b: 0.5645243, a: 1}
+  m_IndirectSpecularColor: {r: 0.4366757, g: 0.48427194, b: 0.5645252, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -574,6 +574,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1480064319463297373, guid: 84488573e8be54492958d6fad31641c2, type: 3}
+      propertyPath: winSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 445553bd95b79e54a806cd77864ddba9, type: 3}
+    - target: {fileID: 1480064319463297373, guid: 84488573e8be54492958d6fad31641c2, type: 3}
+      propertyPath: crashSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 680b1bbe20797fd4c956ea2208056d87, type: 3}
     - target: {fileID: 4495012093981962102, guid: 84488573e8be54492958d6fad31641c2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 25.45
@@ -614,9 +622,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4564389198331486329, guid: 84488573e8be54492958d6fad31641c2, type: 3}
+      propertyPath: mainEngine
+      value: 
+      objectReference: {fileID: 8300000, guid: e3ababb2b55b14477a720f8b40c53e32, type: 3}
     - target: {fileID: 4793947421738638149, guid: 84488573e8be54492958d6fad31641c2, type: 3}
       propertyPath: m_Name
       value: Rocket
+      objectReference: {fileID: 0}
+    - target: {fileID: 8522521097845948957, guid: 84488573e8be54492958d6fad31641c2, type: 3}
+      propertyPath: m_audioClip
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

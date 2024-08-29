@@ -6,6 +6,7 @@ public class GameDevTVRocketMove : MonoBehaviour
 {
     [SerializeField] float rotatePower = 0f;
     [SerializeField] float thrustPower = 0f;
+    [SerializeField] AudioClip mainEngine;
     Rigidbody rb;
     AudioSource audioSource;
     // Start is called before the first frame update
@@ -30,7 +31,7 @@ public class GameDevTVRocketMove : MonoBehaviour
             rb.AddRelativeForce(Vector3.up * thrustPower * Time.deltaTime);
             if (!audioSource.isPlaying)
             {
-                audioSource.Play();
+                audioSource.PlayOneShot(mainEngine);
             }
         }
         else

@@ -7,9 +7,22 @@ using UnityEngine.UIElements.Experimental;
 public class CollisionHandler : MonoBehaviour
 {
     [SerializeField]float delayNextLevel = 1f; //A variable that controls the delay before next level happens.
+    [SerializeField]AudioClip crashSound;
+    [SerializeField]AudioClip winSound;
+
+    AudioSource audioSource;
+
+    bool isTransitioning = false;
+
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     void OnCollisionEnter(Collision other) //When the rocket hits a collider...
     {//Start a switch statement to determine what the player has hit. Use the tag system for this.
+        if (isTransitioning) {return;}
+        
         switch (other.gameObject.tag)
         {
             case "Friendly": //
@@ -28,14 +41,20 @@ public class CollisionHandler : MonoBehaviour
     }
 
     void StartWinSequence()
-    {
-        GetComponent<RocketMovement>().enabled = false;
+    {  
+        isTransitioning = true;
+        audioSource.Stop();
+        audioSource.PlayOneShot(winSound);
+        GetComponent<GameDevTVRocketMove>().enabled = false;
         Invoke("LoadNextLevel", delayNextLevel);
     }
 
     void StartCrashSequence()
     {
-        GetComponent<RocketMovement>().enabled = false;
+        isTransitioning = true;
+        audioSource.Stop();
+        audioSource.PlayOneShot(crashSound);
+        GetComponent<GameDevTVRocketMove>().enabled = false;
         Invoke("Respawn", delayNextLevel);
     }
     void Respawn()
