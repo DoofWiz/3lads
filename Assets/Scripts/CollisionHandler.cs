@@ -10,6 +10,10 @@ public class CollisionHandler : MonoBehaviour
     [SerializeField]AudioClip crashSound;
     [SerializeField]AudioClip winSound;
 
+    [SerializeField]ParticleSystem crashParticles;
+    [SerializeField]ParticleSystem winParticles;
+
+    bool collisionDisabled = false;
     AudioSource audioSource;
 
     bool isTransitioning = false;
@@ -18,10 +22,14 @@ public class CollisionHandler : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
     }
-
+    void Update()
+    {
+        DebugTrigger();
+        //A better way of doing this would be to have something like 'DebugKeys' and all debug functions can go in here.
+    }
     void OnCollisionEnter(Collision other) //When the rocket hits a collider...
     {//Start a switch statement to determine what the player has hit. Use the tag system for this.
-        if (isTransitioning) {return;}
+        if (isTransitioning || collisionDisabled) {return;} //return here means ignore the switch statement. || means 'or'.
         
         switch (other.gameObject.tag)
         {
@@ -45,6 +53,7 @@ public class CollisionHandler : MonoBehaviour
         isTransitioning = true;
         audioSource.Stop();
         audioSource.PlayOneShot(winSound);
+        winParticles.Play();
         GetComponent<GameDevTVRocketMove>().enabled = false;
         Invoke("LoadNextLevel", delayNextLevel);
     }
@@ -54,6 +63,7 @@ public class CollisionHandler : MonoBehaviour
         isTransitioning = true;
         audioSource.Stop();
         audioSource.PlayOneShot(crashSound);
+        crashParticles.Play();
         GetComponent<GameDevTVRocketMove>().enabled = false;
         Invoke("Respawn", delayNextLevel);
     }
@@ -63,6 +73,21 @@ public class CollisionHandler : MonoBehaviour
         SceneManager.LoadScene(currentSceneIndex);
     }
     void LoadNextLevel()
+    {
+        LevelLoadLogic();
+    }
+    void DebugTrigger()
+    {
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            LevelLoadLogic();
+        }
+        else if(Input.GetKeyDown(KeyCode.C))
+        {
+            collisionDisabled = !collisionDisabled; //toggle collision
+        }
+    }
+    void LevelLoadLogic()
     {
         int currentSceneIndex = (SceneManager.GetActiveScene().buildIndex);
         int nextSceneIndex = currentSceneIndex + 1;

@@ -7,6 +7,11 @@ public class GameDevTVRocketMove : MonoBehaviour
     [SerializeField] float rotatePower = 0f;
     [SerializeField] float thrustPower = 0f;
     [SerializeField] AudioClip mainEngine;
+    [SerializeField] AudioClip rightEngine;
+    [SerializeField] AudioClip leftEngine;
+    [SerializeField] ParticleSystem mainEngineVFX;
+    [SerializeField] ParticleSystem leftThrusterVFX;
+    [SerializeField] ParticleSystem rightThrusterVFX;
     Rigidbody rb;
     AudioSource audioSource;
     // Start is called before the first frame update
@@ -28,29 +33,80 @@ public class GameDevTVRocketMove : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Space))
         {
-            rb.AddRelativeForce(Vector3.up * thrustPower * Time.deltaTime);
-            if (!audioSource.isPlaying)
-            {
-                audioSource.PlayOneShot(mainEngine);
-            }
+            StartThrusting();
         }
         else
         {
-            audioSource.Stop();
+            StopThrusting();
         }
     }
-    void UseTurn()
+        void UseTurn()
     {
         if (Input.GetKey(KeyCode.A))
         {
-            ApplyRotation(rotatePower);
+            RotateLeft();
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            ApplyRotation(-rotatePower);
+            RotateRight();
+        }
+        else
+        {
+            StopRotating();
         }
     }
 
+    void StartThrusting()
+    {
+        rb.AddRelativeForce(Vector3.up * thrustPower * Time.deltaTime);
+        if (!audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(mainEngine);
+        }
+        if (!mainEngineVFX.isPlaying)
+        {
+            mainEngineVFX.Play();
+        }
+    }
+
+    void StopThrusting()
+    {
+        audioSource.Stop();
+        mainEngineVFX.Stop();
+    }
+
+    void RotateRight()
+    {
+        if (!audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(leftEngine);
+        }
+        if (!leftThrusterVFX.isPlaying)
+        {
+            leftThrusterVFX.Play();
+        }
+        ApplyRotation(rotatePower);
+    }
+
+    void RotateLeft()
+    {
+        if (!audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(rightEngine);
+        }
+        if (!rightThrusterVFX.isPlaying)
+        {
+            rightThrusterVFX.Play();
+        }
+        ApplyRotation(-rotatePower);
+    }
+
+    void StopRotating()
+    {
+        audioSource.Stop();
+        rightThrusterVFX.Stop();
+        leftThrusterVFX.Stop();
+    }
     void ApplyRotation(float rotationThisFrame)
     {
         rb.freezeRotation = true; //freezing rotation so we can manually rotate
